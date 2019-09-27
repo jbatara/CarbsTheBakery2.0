@@ -8,7 +8,7 @@ namespace Bakery
     public Pastry(string name)
       : base(name, 2.00)
     {
-      BakeryType = "Pastry";
+      BakeryType = "pastry";
     }
 
   }

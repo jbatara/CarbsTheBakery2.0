@@ -9,7 +9,7 @@ namespace Bakery
     public Bread(string name)
       :base(name,5.00)
     {
-      BakeryType = "Bread"; 
+      BakeryType = "bread"; 
     }
 
   }

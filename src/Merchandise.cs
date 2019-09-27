@@ -25,7 +25,7 @@ namespace Bakery
       return (item != null)
           && (Name == item.Name)
           && (Price == item.Price)
-          && (Type == item.Type);
+          && (this.GetType() == item.GetType());
     }
 
   }
