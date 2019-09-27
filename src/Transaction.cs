@@ -98,5 +98,23 @@ namespace Bakery
       return discounts;
     }
 
+    public string PrintTransaction()
+    {
+      string output = "";
+      output+="\n Transaction ID# " + ID;
+      if(Items.Count>0)
+      {
+        for (var i = 0; i < Items.Count; i++)
+        {
+         output+=("\n Item " + i + ". " + Items[i].Name + " Qty: " + Quantity[Items[i].Type + ":" + Items[i].Name]);
+        }
+      }
+      List<double> discounts = BulkBuy();
+      output+=("\n Bread Bulk Buy: " + discounts[0] + " Pastry Bulk Buy: " + discounts[1]);
+      output+=("\n Total: " + Total);
+      
+      return output;
+    }
+
   }
 }
