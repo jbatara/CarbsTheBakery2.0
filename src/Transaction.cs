@@ -7,11 +7,11 @@ namespace Bakery
 
   public class Transaction {
 
-    int ID {get;set;}
-    List<Merchandise> Items {get;set;}
-    Dictionary<string,int> Quantity {get;set;}
+    public int ID {get;set;}
+    public List<Merchandise> Items {get;set;}
+    public Dictionary<string,int> Quantity {get;set;}
 
-    double Total {get;set}
+    public double Total {get;set;}
 
     public Transaction()
     {
@@ -39,7 +39,7 @@ namespace Bakery
 
     public double SubtractItem(Merchandise item)
     {
-      if (Items.Any(item => item.Equals(item)))
+      if (Items.Any(i => item.Equals(i)))
       {
         if(Quantity[item.Type + ":" + item.Name] > 0)
         {
@@ -50,6 +50,7 @@ namespace Bakery
             Items.Remove(item);
             Quantity.Remove(item.Type + ":" + item.Name);
           }
+          Total-=item.Price;
         }
         else
         {
@@ -60,13 +61,14 @@ namespace Bakery
       {
         Console.WriteLine("This item does not exist in the current transaction");
       }
-      Total += item.Price;
       return Total;
     }
 
-    public double calcPromotions(){
-
-    }
+    // public double calcPromotions()
+    // {
+    //   //bread buy 2 get one free ($5 each)
+    //   //pastry 1/$2 or 3/$5
+    // }
 
   }
 }
