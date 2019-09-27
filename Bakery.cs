@@ -9,8 +9,12 @@ namespace Bakery
   {
 
     private static int lastTransaction = 1;
+    static List<Transaction> Transactions = new List<Transaction>();
 
-    public List<Transaction> Transactions { get; set; }
+    public Bakery()
+    {
+      Transactions = new List<Transaction>();
+    }
     static Pastry doughnut = new Pastry("doughnut");
     static Pastry appleFritter = new Pastry("apple fritter");
     static Pastry croissont = new Pastry("croissont");
@@ -26,18 +30,20 @@ namespace Bakery
     static Bread wheat = new Bread("wheat");
     static List<Bread> bread = new List<Bread>() { french, sausageCurl, gruyereChunkLoaf, rosemaryGarlicLoaf, rye, wheat };
 
+   
+
     public static void Main()
     {
-
-      List<int> list = new List<int>() { 1, 2, 3, 4, 5 };
-      var listSearch = list.Where(n => n >2);
-      List<int> intList = listSearch.ToList();
-      foreach(int i in intList)
-      {
-        Console.WriteLine(i);
-      }
-      
-      // POSMainMenu();
+      Transaction t1 = CreateTransaction();
+      t1.AddItem(wheat);
+      t1.AddItem(rye);
+      t1.AddItem(french);
+      t1.AddItem(doughnut);
+      t1.AddItem(seasonalFruitTart);
+      t1.AddItem(doughnut);
+      t1.AddItem(seasonalFruitTart);
+      Transactions.Add(t1);
+      POSMainMenu();
     }
 
     public static void POSMainMenu()
@@ -49,7 +55,7 @@ namespace Bakery
 
       if (userInput == "s")
       {
-        // POSNewTransaction();
+        POSNewTransaction(0);
       }
       else if (userInput == "vo")
       {
@@ -57,7 +63,20 @@ namespace Bakery
       }
       else if (userInput == "eo")
       {
-        POSEditTransaction();
+        POSOldTransactions();
+        Console.WriteLine("What transaction ID would you like to edit?");
+        string userID = Console.ReadLine();
+        int result;
+        bool success = Int32.TryParse(userID, out result);
+        if(success)
+        {
+          POSEditTransaction(result);
+        }
+        else
+        {
+          Console.WriteLine(userID + " is not a valid ID input. Going back to the main menu.");
+          POSMainMenu();
+        }
       }
       else
       {
@@ -69,84 +88,133 @@ namespace Bakery
     public static void POSNewTransaction(int code)
     {
       //if code 0, new transaction. if code 1, then go back to the transaction menu again.
-      // if(code == 0)
-      // {
-      //   Console.WriteLine("░░░░░░░░░░" + "New Transaction" + "░░░░░░░░░░");
-      //   Transaction newTransaction = CreateTransaction();
-      //   Console.WriteLine("░░░░" + "Transaction" + "░░░░");
-      //   Console.WriteLine(newTransaction.PrintTransaction());
-      //   Console.WriteLine("| Add an item (A) | Subtract Item (S) | See Transaction(T) | Finish Transaction(F) |");
-      //   string userInput = Console.ReadLine().ToLower();
-      //   if (userInput == "a")
-      //   {
-      //     Console.WriteLine("Input name of item to add.");
-      //     string userItemName = Console.ReadLine();
-      //     if(bread.Where(b => b.Name == userItemName)== 1)
-      //     {
-
-      //       newTransaction.AddItem()
-      //     }
-      //     else if (pastry.Where(p => p.Name == userItemName).Any())
-      //     {
-
-      //     }
-      //   }
-      //   else if (userInput == "s")
-      // }
-      // else if (code ==1)
-      // {
-
+      if (code == 0)
+      {
+        Console.WriteLine("░░░░░░░░░░" + "New Transaction" + "░░░░░░░░░░");
+        Transaction newTransaction = CreateTransaction();
+        Transactions.Add(newTransaction);
+        Console.WriteLine(newTransaction.PrintTransaction());
+      }
+      POSEditTransaction(Transactions[Transactions.Count - 1].ID);
+    }
+    public static void POSOldTransactions()
+    {
+      Console.WriteLine("░░░░░░░░░░" + "Previous Transactions" + "░░░░░░░░░░");
+      foreach (Transaction t in Transactions)
+      {
+        Console.WriteLine(t.PrintTransaction());
+      }
     }
 
-
-  
-
-  public static void POSOldTransactions()
-  {
-    Console.WriteLine("░░░░░░░░░░" + "Previous Transactions" + "░░░░░░░░░░");
-  }
-
-  public static void POSEditTransaction()
-  {
-    Console.WriteLine("░░░░░░░░░░" + "Edit Transactions" + "░░░░░░░░░░");
-  }
-
-  public static Transaction CreateTransaction()
-  {
-    Transaction transaction = new Transaction(lastTransaction);
-    lastTransaction++;
-    return transaction;
-  }
-
-  public static string PrintBakeryMenu()
-  {
-
-    string breads = "Bread options: ";
-    for (int i = 0; i < bread.Count; i++)
+    public static void POSEditTransaction(int id)
     {
-      if (i == bread.Count - 1)
+      if (Transactions.Count >= id && id > 0)
       {
-        breads += " " + bread[i].Name;
+        Transaction transaction = Transactions[id - 1];
+        Console.WriteLine("░░░░░░░░░░" + "Edit Transactions" + "░░░░░░░░░░");
+        Console.WriteLine("| Add an item (A) | Subtract Item (S) | See Other Transactions(T) | Main Menu(M) |");
+        string userInput = Console.ReadLine().ToLower();
+        if (userInput == "a")
+        {
+          Console.WriteLine("Input name of item to add.");
+          string userItemName = Console.ReadLine();
+          List<Bread> breadSearch = bread.Where(b => b.Name == userItemName).ToList();
+          List<Pastry> pastrySearch = pastry.Where(b => b.Name == userItemName).ToList();
+          if (breadSearch.Count > 0)
+          {
+            transaction.AddItem(breadSearch[0]);
+          }
+          else if (pastrySearch.Count > 0)
+          {
+            transaction.AddItem(pastrySearch[0]);
+          }
+          else
+          {
+            Console.WriteLine(userItemName + " is not a valid Item name. The following items are valid entries:");
+            PrintBakeryMenu();
+            POSEditTransaction(id);
+          }
+        }
+        else if (userInput == "s")
+        {
+          Console.WriteLine("Input name of item to subtract.");
+          string userItemName = Console.ReadLine();
+          List<Merchandise> transactionSearch = transaction.Items.Where(b => b.Name == userItemName).ToList();
+          if (transactionSearch.Count > 0)
+          {
+            transaction.AddItem(transactionSearch[0]);
+          }
+          else
+          {
+            Console.WriteLine(userItemName + " is not a valid Item name. The following items are valid entries:");
+            string output = "";
+            for (int i = 0; i < transaction.Items.Count; i++)
+            {
+              if(i == transaction.Items.Count-1)
+              {
+                output += " " + transaction.Items[i].Name;
+              }
+              else
+              {
+                output += ", " + transaction.Items[i].Name;
+              }
+            }
+            Console.WriteLine(output);
+            POSEditTransaction(id);
+          }
+        }
+        else if (userInput == "t")
+        {
+          POSOldTransactions();
+        }
+        else if (userInput == "m")
+        {
+          POSMainMenu();
+        }
       }
       else
       {
-        breads += ", " + bread[i].Name;
+        Console.WriteLine("An id of " + id + " is an invalid Input. Going back to the Main Menu.");
+        POSMainMenu();
       }
     }
-    string pastries = "Pastry options: ";
-    for (int i = 0; i < bread.Count; i++)
+
+    public static Transaction CreateTransaction()
     {
-      if (i == pastry.Count - 1)
-      {
-        pastries += " " + bread[i].Name;
-      }
-      else
-      {
-        pastries += ", " + bread[i].Name;
-      }
+      Transaction transaction = new Transaction(lastTransaction);
+      lastTransaction++;
+      return transaction;
     }
-    string output = "\n" + breads + "\n " + pastries;
-    return output;
-  }
+
+    public static string PrintBakeryMenu()
+    {
+
+      string breads = "Bread options: ";
+      for (int i = 0; i < bread.Count; i++)
+      {
+        if (i == bread.Count - 1)
+        {
+          breads += " " + bread[i].Name;
+        }
+        else
+        {
+          breads += ", " + bread[i].Name;
+        }
+      }
+      string pastries = "Pastry options: ";
+      for (int i = 0; i < bread.Count; i++)
+      {
+        if (i == pastry.Count - 1)
+        {
+          pastries += " " + bread[i].Name;
+        }
+        else
+        {
+          pastries += ", " + bread[i].Name;
+        }
+      }
+      string output = "\n" + breads + "\n " + pastries;
+      return output;
+    }
   }
 }

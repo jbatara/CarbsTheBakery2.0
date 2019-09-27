@@ -33,12 +33,15 @@ namespace Bakery
         Items.Add(newItem);
         Quantity[newItem.Type + ":" + newItem.Name] = 1;
       }
-      Total += newItem.Price;
-      List<double> discounts = BulkBuy();
-      foreach (double discount in discounts)
+      Total = 0;
+      foreach(Merchandise i in Items)
       {
-        Total -= discount;
+        Total += i.Price;
       }
+      Console.WriteLine("SubTotal" + Total);
+      List<double> discounts = BulkBuy();
+      Total = Total-discounts[0]-discounts[1];
+      Console.WriteLine("AfterDiscount" + Total);
       return Total;
     }
 
@@ -84,16 +87,15 @@ namespace Bakery
       {
         if(item is Bread)
         {
-          breadCounter++;
+          breadCounter+= Quantity[item.Type + ":" + item.Name];
         }
         else if (item is Pastry)
         {
-          pastryCounter++;
+          pastryCounter += Quantity[item.Type + ":" + item.Name];
         }
       }
       double breadDiscount = Math.Floor(breadCounter/3.0)*5;
-      Console.WriteLine("Bread Discount " + breadDiscount);
-      double pastryDiscount = Math.Floor(pastryCounter/3.0)*1;
+      double pastryDiscount = Math.Floor(pastryCounter/3.0);
       List<double> discounts = new List<double>(){breadDiscount,pastryDiscount};
       return discounts;
     }
