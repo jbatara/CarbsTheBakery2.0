@@ -13,9 +13,9 @@ namespace Bakery
 
     public double Total {get;set;}
 
-    public Transaction()
+    public Transaction(int currentTransactionID)
     {
-      ID = Bakery.lastTransaction+1;
+      ID = currentTransactionID;
       Items = new List<Merchandise>();
       Quantity = new Dictionary<string,int>();
       Total = 0;
@@ -34,6 +34,11 @@ namespace Bakery
         Quantity[newItem.Type + ":" + newItem.Name] = 1;
       }
       Total += newItem.Price;
+      List<double> discounts = BulkBuy();
+      foreach (double discount in discounts)
+      {
+        Total -= discount;
+      }
       return Total;
     }
 
@@ -61,14 +66,37 @@ namespace Bakery
       {
         Console.WriteLine("This item does not exist in the current transaction");
       }
+      List<double> discounts = BulkBuy();
+      foreach(double discount in discounts)
+      {
+        Total -= discount;
+      }
       return Total;
     }
 
-    // public double calcPromotions()
-    // {
-    //   //bread buy 2 get one free ($5 each)
-    //   //pastry 1/$2 or 3/$5
-    // }
+    public List<double> BulkBuy()
+    {
+      //bread buy 2 get one free ($5 each)
+      //pastry 1/$2 or 3/$5
+      int breadCounter = 0;
+      int pastryCounter = 0;
+      foreach(Merchandise item in Items)
+      {
+        if(item is Bread)
+        {
+          breadCounter++;
+        }
+        else if (item is Pastry)
+        {
+          pastryCounter++;
+        }
+      }
+      double breadDiscount = Math.Floor(breadCounter/3.0)*5;
+      Console.WriteLine("Bread Discount " + breadDiscount);
+      double pastryDiscount = Math.Floor(pastryCounter/3.0)*1;
+      List<double> discounts = new List<double>(){breadDiscount,pastryDiscount};
+      return discounts;
+    }
 
   }
 }
