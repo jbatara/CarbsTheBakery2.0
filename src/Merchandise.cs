@@ -18,6 +18,16 @@ namespace Bakery
       Type = "Unknown";
     }
 
+    public override bool Equals(object value)
+    {
+      Merchandise item = value as Merchandise;
+
+      return (item != null)
+          && (Name == item.Name)
+          && (Price == item.Price)
+          && (Type == item.Type);
+    }
+
   }
 
 }
