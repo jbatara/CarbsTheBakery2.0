@@ -21,6 +21,7 @@ The user is able to add a new transaction, see old transactions, and edit old tr
 
 ## Specifications: User Interface
 For all of these situations, the sample Transaction list is only 1 transaction long.
+
 |Spec | Input | Output|
 |:---:|:------|:------|
 |If POSMainMenu command input doesn't exist|"wegwe"| wegwe is not a valid ID input. Going back to the main. Going back to the main menu.  |
