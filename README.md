@@ -42,24 +42,27 @@ For all of these situations, the sample Transaction list is only 1 transaction l
 If you do not have the .NET Core installed on your computer, please install it by following the directions for your operating system [here](https://dotnet.microsoft.com/download). The .NET Core version used for this project is 2.1
 
 To view locally please copy the link to [this repo](https://github.com/jbatara/CarbsTheBakery) and type the following command into your Bash terminal:
-
+```
 $git clone repo_url
+```
 
 with repo_url being the url that was just copied. To open the console app, navigate to the local directory which the online repository was cloned to using the command
 
+```
 $cd CarbsTheBakery/
+```
 
 Once in the correct repository, and confirming that you have .NET core installed (version 2.1 at minimum), run the app with the command
-
+```
 $dotnet run
-
+```
 and enjoy!
 
 This project is currently not hosted online.
 
 ## Known Bugs
 
-_1. Trying to add a new transaction within the main menu returns an invalid ID for POSEditTransaction. WIP_
+_None. All previously reported bugs have been resolved._
 
 ## Support and contact details
 
