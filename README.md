@@ -70,6 +70,36 @@ Please feel free to contact the developer by raising a new [issue](https://githu
 * C#
 * .NET Core 2.1
 
+## Design Considerations
+
+- All items Pastry and Bread items in the bakery have a class type built for them that are extended from the Baked Goods class (which is extended from Merchandise class). This class tree was developed to give flexibility in the future if the bakery decides to sell items other than baked goods (such as T-shirts, gift cards, etc.). This way, another class can be branched from the main Merchandise class to more easily check for item types when applying discounts, pricing, and printing to console methods.
+
+```
+Merchandise
+  |_BakedGoods
+    |_Bread
+    |_Pastry
+  |_(Additional Merchandise Cats)
+    |_(Additional Sub Cats)
+```
+
+- The Start new transaction option in the POSMainMenu method utilizes an input code to branch the recursive call of the POSNewTransaction method in the instance where a user mistakenly types an invalid input after initializing a new transaction. This prevents a new empty Transaction being created every time an invalid command is inputted within the POSNewTransaction method.
+
+
+- The branching recursive call to POSNewTransaction is also possible due to another notable feature: creating the instance of a new transaction automatically feeds the user to the POSEditTransaction method. This is advantageous for preventing redundant code in the POSNewTransaction method and POSEditTransaction method.
+
+
+```cs
+public static void POSNewTransaction(int code)
+{
+  if (code == 0)
+  {
+    //create new transaction
+  }
+  POSEditTransaction(Transactions[Transactions.Count - 1].ID);
+}
+```
+
 ### License
 
 _MIT_
