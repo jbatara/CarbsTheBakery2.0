@@ -36,12 +36,11 @@ namespace Bakery
       Total = 0;
       foreach(Merchandise i in Items)
       {
-        Total += i.Price;
+        int quantity = Quantity[i.Type + ":" + i.Name];
+        Total += i.Price * quantity;
       }
-      Console.WriteLine("SubTotal" + Total);
       List<double> discounts = BulkBuy();
       Total = Total-discounts[0]-discounts[1];
-      Console.WriteLine("AfterDiscount" + Total);
       return Total;
     }
 
@@ -108,12 +107,13 @@ namespace Bakery
       {
         for (var i = 0; i < Items.Count; i++)
         {
-         output+=("\n Item " + i + ". " + Items[i].Name + " Qty: " + Quantity[Items[i].Type + ":" + Items[i].Name]);
+          int index = i+1;
+         output+=("\n Item " + index + ". " + Items[i].Name + " Qty: " + Quantity[Items[i].Type + ":" + Items[i].Name]);
         }
       }
       List<double> discounts = BulkBuy();
-      output+=("\n Bread Bulk Buy: " + discounts[0] + " Pastry Bulk Buy: " + discounts[1]);
-      output+=("\n Total: " + Total);
+      output+=("\n Bread Bulk Buy: -$" + discounts[0] + " Pastry Bulk Buy: -$" + discounts[1]);
+      output+=("\n Total: $" + Total);
       
       return output;
     }
