@@ -5,20 +5,32 @@ using System.Linq;
 namespace Bakery.Models
 {
 
-  public class Transaction {
+  public class Order {
 
+    int _instanceID = 1;
     public int ID {get;set;}
     public List<Merchandise> Items {get;set;}
+    public int OrderingVendor {get;set;}
     public Dictionary<string,int> Quantity {get;set;}
 
     public double Total {get;set;}
 
-    public Transaction(int currentTransactionID)
+    public string Comments {get;set;}
+
+    public Order(int vendorID)
     {
-      ID = currentTransactionID;
+      ID = _instanceID;
+      OrderingVendor = vendorID;
       Items = new List<Merchandise>();
       Quantity = new Dictionary<string,int>();
       Total = 0;
+      Comments = "";
+      _instanceID++;
+    }
+
+    public Order(int vendorID, string comments):this(vendorID)
+    {
+      Comments = comments;
     }
 
     public double AddItem(Merchandise newItem)
@@ -79,9 +91,14 @@ namespace Bakery.Models
     public List<double> BulkBuy()
     {
       //bread buy 2 get one free ($5 each)
+      double BREAD_QTYFOR_DISCOUNT = 3.0;
+      double BREAD_DISCOUNT_DOLLARS = 5.0;
       //pastry 1/$2 or 3/$5
+      double PASTRY_QTY_FOR_DISCOUNT = 3.0;
+      double PASTRY_DISCOUNT_DOLLARS = 1.0;
       int breadCounter = 0;
       int pastryCounter = 0;
+
       foreach(Merchandise item in Items)
       {
         if(item is Bread)
@@ -93,30 +110,13 @@ namespace Bakery.Models
           pastryCounter += Quantity[item.Type + ":" + item.Name];
         }
       }
-      double breadDiscount = Math.Floor(breadCounter/3.0)*5;
-      double pastryDiscount = Math.Floor(pastryCounter/3.0);
+      double breadDiscount = Math.Floor(breadCounter/BREAD_QTYFOR_DISCOUNT)*BREAD_DISCOUNT_DOLLARS;
+      double pastryDiscount = Math.Floor(pastryCounter/PASTRY_QTY_FOR_DISCOUNT)*PASTRY_DISCOUNT_DOLLARS;
       List<double> discounts = new List<double>(){breadDiscount,pastryDiscount};
       return discounts;
     }
 
-    public string PrintTransaction()
-    {
-      string output = "";
-      output+="\n Transaction ID# " + ID;
-      if(Items.Count>0)
-      {
-        for (var i = 0; i < Items.Count; i++)
-        {
-          int index = i+1;
-         output+=("\n Item " + index + ". " + Items[i].Name + " Qty: " + Quantity[Items[i].Type + ":" + Items[i].Name]);
-        }
-      }
-      List<double> discounts = BulkBuy();
-      output+=("\n Bread Bulk Buy: -$" + discounts[0] + " Pastry Bulk Buy: -$" + discounts[1]);
-      output+=("\n Total: $" + Total);
-      
-      return output;
-    }
+    
 
   }
 }
