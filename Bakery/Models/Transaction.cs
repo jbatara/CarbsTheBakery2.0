@@ -5,9 +5,9 @@ using System.Linq;
 namespace Bakery.Models
 {
 
-  public class Transaction {
+  public class Order {
 
-    int _currentID = 1;
+    static int _currentID = 1;
     public int ID {get;set;}
     public List<Merchandise> Items {get;set;}
     public int OrderingVendor {get;set;}
@@ -17,7 +17,7 @@ namespace Bakery.Models
 
     public string Comments {get;set;}
 
-    public Transaction(int vendorID)
+    public Order(int vendorID)
     {
       ID = _currentID;
       OrderingVendor = vendorID;
@@ -27,7 +27,7 @@ namespace Bakery.Models
       Comments = "";
       _currentID++;
     }
-    public Transaction(int vendorID, string comment):this(vendorID)
+    public Order(int vendorID, string comment):this(vendorID)
     {
       Comments = comment;
     }
