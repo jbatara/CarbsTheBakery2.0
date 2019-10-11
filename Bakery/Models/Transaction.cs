@@ -5,9 +5,9 @@ using System.Linq;
 namespace Bakery.Models
 {
 
-  public class Order {
+  public class Transaction {
 
-    int _instanceID = 1;
+    int _currentID = 1;
     public int ID {get;set;}
     public List<Merchandise> Items {get;set;}
     public int OrderingVendor {get;set;}
@@ -17,20 +17,19 @@ namespace Bakery.Models
 
     public string Comments {get;set;}
 
-    public Order(int vendorID)
+    public Transaction(int vendorID)
     {
-      ID = _instanceID;
+      ID = _currentID;
       OrderingVendor = vendorID;
       Items = new List<Merchandise>();
-      Quantity = new Dictionary<string,int>();
+      Quantity = new Dictionary<string, int>();
       Total = 0;
       Comments = "";
-      _instanceID++;
+      _currentID++;
     }
-
-    public Order(int vendorID, string comments):this(vendorID)
+    public Transaction(int vendorID, string comment):this(vendorID)
     {
-      Comments = comments;
+      Comments = comment;
     }
 
     public double AddItem(Merchandise newItem)
@@ -119,7 +118,26 @@ namespace Bakery.Models
     public string PrintTransaction()
     {
       string output = "";
-      output += "<h2><strong>Vendor ID:</strong> " + OrderingVendor + " <strong>Transaction ID:</strong> " + ID + "</h2>";
+      output += "<h4><strong>Vendor ID:</strong> " + OrderingVendor + " <strong>Transaction ID:</strong> " + ID + "</h4>";
+      if (Items.Count > 0)
+      {
+        for (var i = 0; i < Items.Count; i++)
+        {
+          int index = i + 1;
+          output += ("<p><strong>Item " + index + ".</strong> " + Items[i].Name + " <strong>Qty:</strong> " + Quantity[Items[i].Type + ":" + Items[i].Name]);
+        }
+      }
+      List<double> discounts = BulkBuy();
+      output += ("\n Bread Bulk Buy: -$" + discounts[0] + " Pastry Bulk Buy: -$" + discounts[1]);
+      output += ("\n Total: $" + Total);
+
+      return output;
+    }
+
+    public string PrintVendorTransaction()
+    {
+      string output = "";
+      output += "<h4><strong>Transaction ID:</strong> " + ID + "</h4>";
       if (Items.Count > 0)
       {
         for (var i = 0; i < Items.Count; i++)
