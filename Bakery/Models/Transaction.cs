@@ -116,6 +116,24 @@ namespace Bakery.Models
       return discounts;
     }
 
+    public string PrintTransaction()
+    {
+      string output = "";
+      output += "<h2><strong>Vendor ID:</strong> " + OrderingVendor + " <strong>Transaction ID:</strong> " + ID + "</h2>";
+      if (Items.Count > 0)
+      {
+        for (var i = 0; i < Items.Count; i++)
+        {
+          int index = i + 1;
+          output += ("<p><strong>Item " + index + ".</strong> " + Items[i].Name + " <strong>Qty:</strong> " + Quantity[Items[i].Type + ":" + Items[i].Name]);
+        }
+      }
+      List<double> discounts = BulkBuy();
+      output += ("\n Bread Bulk Buy: -$" + discounts[0] + " Pastry Bulk Buy: -$" + discounts[1]);
+      output += ("\n Total: $" + Total);
+
+      return output;
+    }
     
 
   }
