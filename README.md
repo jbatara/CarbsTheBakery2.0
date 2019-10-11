@@ -1,14 +1,14 @@
-# _Carbs: The Bakery_
+# _Carbs: The Bakery 2.0_
 
-#### _A Basic "Point of sale" system for a bakery, September 27th, 2019_
+#### _A Basic Online Order Fulfillment system for a bakery, October 11th, 2019_
 
 #### _By **Jennifer Batara**_
 
 ## Description
 
-This application is a C#.Net application run in the console that is able to track transactions for a bakery with certain discount schemes.
+This application is a ASP.Net MVC web application rthat is able to track transactions for a bakery with certain discount schemes.
 
-The user is able to add a new transaction, see old transactions, and edit old transactions. Currently the transactions are stored locally, and are not saved between run istances of the console application.
+The user is able to add a new vendors, see a list of vendors, add orders, and see a list of all orders/or orders by vendor. Currently the transactions are stored locally, and are not saved between run istances of the local web application.
 
 ## Specifications: Pricing
 
@@ -24,12 +24,9 @@ For all of these situations, the sample Transaction list is only 1 transaction l
 
 |Spec | Input | Output|
 |:---:|:------|:------|
-|If POSMainMenu command input doesn't exist|"wegwe"| wegwe is not a valid ID input. Going back to the main. Going back to the main menu.  |
-|POSNewTransaction creates a new Transaction when fed the code 0| POSNewTransaction(0) | New Transaction Created|
-|POSNewTransaction does not create a new Transaction when fed the code 1, instead it will open the latest transaction| POSNewTransaction(1)|Open Transaction Count|
-|POSEditTransaction requires an ID selection that exists| POSEditTransaction(1)|Print Transaction with ID 1|
-|POSEditTransaction requires an ID selection that exists| POSEditTransaction(100)|An ID of 100 is an invalid Input. Going back to the Main Menu.|
-
+|If there are no vendros added, a message is displayed to the user when trying to view all vendors|"/vendor"| I'm sorry, it seems like you don't have any vendors. If you'd like to add one, please click on the button below|
+|New Vendor Button directs the user to create a new Vendor| click "New Vendor" | Gets form asking for new vendor name|
+|New Vendor forms are required to input a name| Attempts to submit a new vendor form that is empty will cause a popup.|"A name is required to submit the form"|
 
 
 ## Setup/Installation Requirements
@@ -37,11 +34,11 @@ For all of these situations, the sample Transaction list is only 1 transaction l
 -   Internet Connection
 -   Internet browser
 -   Bash Terminal
--   .NET Core
+-   .NET Core 2.2
 
-If you do not have the .NET Core installed on your computer, please install it by following the directions for your operating system [here](https://dotnet.microsoft.com/download). The .NET Core version used for this project is 2.1
+If you do not have the .NET Core installed on your computer, please install it by following the directions for your operating system [here](https://dotnet.microsoft.com/download). The .NET Core version used for this project is 2.2.
 
-To view locally please copy the link to [this repo](https://github.com/jbatara/CarbsTheBakery) and type the following command into your Bash terminal:
+To view locally please copy the link to [this repo](https://github.com/jbatara/CarbsTheBakery2.0) and type the following command into your Bash terminal:
 ```
 $git clone repo_url
 ```
@@ -52,7 +49,7 @@ with repo_url being the url that was just copied. To open the console app, navig
 $cd CarbsTheBakery/
 ```
 
-Once in the correct repository, and confirming that you have .NET core installed (version 2.1 at minimum), run the app with the command
+Once in the correct repository, and confirming that you have .NET core installed (version 2.2), run the app with the command
 ```
 $dotnet run
 ```
@@ -66,12 +63,12 @@ _None. All previously reported bugs have been resolved._
 
 ## Support and contact details
 
-Please feel free to contact the developer by raising a new [issue](https://github.com/jbatara/CarbsTheBakery/issues/new) on the github repo. You can browse the current issues [here](https://github.com/jbatara/CarbsTheBakery/issues).
+Please feel free to contact the developer by raising a new [issue](https://github.com/jbatara/CarbsTheBakery2.0/issues/new) on the github repo. You can browse the current issues [here](https://github.com/jbatara/CarbsTheBakery2.0/issues).
 
 ## Technologies Used
 
 * C#
-* .NET Core 2.1
+* .NET Core 2.2
 
 ## Design Considerations
 
@@ -86,22 +83,7 @@ Merchandise
     |_(Additional Sub Cats)
 ```
 
-- The Start new transaction option in the POSMainMenu method utilizes an input code to branch the recursive call of the POSNewTransaction method in the instance where a user mistakenly types an invalid input after initializing a new transaction. This prevents a new empty Transaction being created every time an invalid command is inputted within the POSNewTransaction method.
-
-
-- The branching recursive call to POSNewTransaction is also possible due to another notable feature: creating the instance of a new transaction automatically feeds the user to the POSEditTransaction method. This is advantageous for preventing redundant code in the POSNewTransaction method and POSEditTransaction method.
-
-
-```cs
-public static void POSNewTransaction(int code)
-{
-  if (code == 0)
-  {
-    //create new transaction
-  }
-  POSEditTransaction(Transactions[Transactions.Count - 1].ID);
-}
-```
+- Vendors and the Order class itself have Pending and Fulfilled order lists to make it easier for users to check orders that still need to go out.
 
 ### License
 
