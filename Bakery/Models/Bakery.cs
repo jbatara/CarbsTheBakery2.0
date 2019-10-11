@@ -9,8 +9,8 @@ namespace Bakery.Models
 
   {
 
-    private static int lastTransaction = 1;
-    static List<Transaction> Transactions = new List<Transaction>();
+    private static int _lastTransaction = 1;
+    static List<Order> Orders = new List<Order>();
 
     static Pastry doughnut = new Pastry("doughnut");
     static Pastry appleFritter = new Pastry("apple fritter");
