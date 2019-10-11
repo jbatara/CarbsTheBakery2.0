@@ -1,0 +1,23 @@
+@using System.Linq;
+@using Bakery.Models;
+
+@{
+  Layout = "_Layout";
+}
+<div id="vendors">
+
+  @if(Vendor.GetCurrentID() >1)
+  {
+    
+    @foreach(Vendor v in Vendor.GetAll())
+    {
+      @Html.Raw(v.PrintVendor());
+    }
+  }
+  else
+  {
+    <p>I'm sorry, it seems like you don't have any vendors. If you'd like to add one, please click on the button below</p><form action="/vendor/new" method="GET"><button type="submit" class="btn-secondary">Add New Vendor</button></form>
+  }
+
+  
+</div>
