@@ -8,23 +8,36 @@ namespace Bakery.Models
 
   public class Vendor
   {
-    int _currentID = 1;
-    List<Vendor> _listOfVendors = new List<Vendor>();
+    static int _currentID = 1;
+    static List<Vendor> _listOfVendors = new List<Vendor>();
     public string Name { get; set; }
     public int ID { get; set; }
 
-    public List<Transaction> VendorOrders { get; set; }
+    public List<Order> VendorOrders { get; set; }
+    public List<Order> Pending {get;set;}
+    public List<Order> Fulfilled {get;set;}
 
     public Vendor(string name)
     {
       ID = _currentID;
       Name = name;
-      VendorOrders = new List<Transaction>();
+      VendorOrders = new List<Order>();
+      Pending = new List<Order>();
+      Fulfilled = new List<Order>();
       _currentID++;
       _listOfVendors.Add(this);
     }
 
-    public void AddOrder(Transaction t)
+    public static List<Vendor> GetAll()
+    {
+      return _listOfVendors;
+    }
+    public static int GetCurrentID()
+    {
+      return _currentID;
+    }
+
+    public void AddOrder(Order t)
     {
       VendorOrders.Add(t);
     }
@@ -40,7 +53,9 @@ namespace Bakery.Models
 
     public string PrintVendor()
     {
-      string output = "<h3> <strong>Vendor:</strong> " + Name + "<strong>Vendor ID:</strong> " + ID + "</h3";
+      string output = "<h3> <strong>Vendor:</strong> " + Name + "</h3><h3><strong>Vendor ID:</strong> " + ID + "</h3";
+      output += "<h4>Orders</h4>";
+      output += "<p><strong>Total Number of Orders:</strong> " + VendorOrders.Count;
       return output;
 
     }
