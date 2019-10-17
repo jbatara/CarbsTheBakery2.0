@@ -3,9 +3,9 @@
 }
 @using Bakery.Models;
 <form action="/vendor/new" method="POST">
-  <label for="vendorID"></label>
+  <label for="vendorID">Vendor ID</label>
   <input type="text" name="vendorID" value="@Vendor.GetCurrentID()">
-  <label for="name"></label>
+  <label for="name">Vendor Name</label>
   <input type="text" name="name" required>
   <button type="submit" class="btn-secondary">Create New Vendor</button>
 </form>

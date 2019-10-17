@@ -17,7 +17,7 @@ namespace Bakery.Models
     static Pastry croissont = new Pastry("croissont");
     static Pastry seasonalFruitTart = new Pastry("seasonal fruit tart");
     static Pastry strawberryTart = new Pastry("strawberry fruit tart");
-    static List<Pastry> pastry = new List<Pastry>() { doughnut, appleFritter, croissont, seasonalFruitTart, strawberryTart };
+    static List<Pastry> PASTRIES = new List<Pastry>() { doughnut, appleFritter, croissont, seasonalFruitTart, strawberryTart };
 
     static Bread french = new Bread("french");
     static Bread sausageCurl = new Bread("sausage");
@@ -25,7 +25,7 @@ namespace Bakery.Models
     static Bread rosemaryGarlicLoaf = new Bread("rosemary garlic");
     static Bread rye = new Bread("rye");
     static Bread wheat = new Bread("wheat");
-    static List<Bread> bread = new List<Bread>() { french, sausageCurl, gruyereChunkLoaf, rosemaryGarlicLoaf, rye, wheat };
+    static List<Bread> BREADS = new List<Bread>() { french, sausageCurl, gruyereChunkLoaf, rosemaryGarlicLoaf, rye, wheat };
 
 
 

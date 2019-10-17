@@ -1,0 +1,44 @@
+@{
+  Layout = "_Layout";
+}
+@using Bakery.Models;
+<div class="col-lg-6">
+<form action="/vendor/new" method="POST">
+  <label for="vendorID">Vendor ID</label>
+  <input type="text" name="vendorID" value="@Model.vendor.ID()">
+  <label for="name">@Model.vendor.Name</label>
+  <input type="text" name="name" required>
+  <label for="item">Bread/Pastry</label>
+  <select>
+      @{
+          <optgroup label="Breads">
+          foreach(Bread b in Bakery.BREADS)
+          {
+            <option value=@b.Name>@b.Name</option>
+          }
+          </optgroup>
+          <optgroup label="Pastries">
+          foreach(Pastry p in Bakery.PASTRIES)
+          {
+            <option value="@p.Name">@p.Name</option>
+          }
+          </optgroup>
+      }
+  </select>
+  <label for="itemQty">Qty</label>
+  <input type="number" name="itemQty" required>
+  <button class="btn btn-dark" id="add">Add Item</button>
+
+  <button type="submit" class="btn-secondary">Save Order</button>
+</form>
+</div>
+<div class="col-lg-6">
+
+</div>
+
+<script>
+    let cart = {};
+    $("#add").click(function(){
+        
+    });
+</script>
